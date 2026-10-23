@@ -363,7 +363,7 @@ if "authentication_status" not in st.session_state:
     st.session_state["authentication_status"] = False
 
 if not st.session_state["authentication_status"]:
-    st.markdown('<div class="login-title">気象GISデータ可視化システム</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-title">データ可視化システム（GIS・気象・温度）</div>', unsafe_allow_html=True)
     
     with st.form("login_form"):
         username = st.text_input("Username")
@@ -373,7 +373,7 @@ if not st.session_state["authentication_status"]:
         if submit_button:
             if username == "admin" and password == "cdctype":
                 st.session_state["authentication_status"] = True
-                st.session_state["name"] = "MK事業部"
+                st.session_state["name"] = "yoshikawa"
                 st.rerun()
             else:
                 st.error("ユーザー名またはパスワードが間違っています")
