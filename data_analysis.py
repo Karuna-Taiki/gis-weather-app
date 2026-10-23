@@ -363,7 +363,7 @@ if "authentication_status" not in st.session_state:
     st.session_state["authentication_status"] = False
 
 if not st.session_state["authentication_status"]:
-    st.markdown('<div class="login-title">データ可視化システム（GIS・気象・温度）</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-title">地球科学GIS総合アナライザー</div>', unsafe_allow_html=True)
     
     with st.form("login_form"):
         username = st.text_input("Username")
@@ -373,7 +373,7 @@ if not st.session_state["authentication_status"]:
         if submit_button:
             if username == "admin" and password == "cdctype":
                 st.session_state["authentication_status"] = True
-                st.session_state["name"] = "yoshikawa"
+                st.session_state["name"] = "テスト"
                 st.rerun()
             else:
                 st.error("ユーザー名またはパスワードが間違っています")
@@ -396,7 +396,7 @@ if authentication_status:
         st.write(f"👤 ログイン中: **{name}** さん")
         
         menu_items = [
-            ("🗺️  気象GISデータ可視化システム", "気象GISデータ可視化システム"),
+            ("🗺️  気象データ可視化マップ", "気象データ可視化マップ"),
             ("🗾  地形図", "地形図"),
             ("📹  Liveカメラ映像", "Liveカメラ映像"),
             ("💧  ため池・ダム・湖データ", "ため池・ダム・湖データ")
