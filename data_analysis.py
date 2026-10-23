@@ -540,7 +540,7 @@ if authentication_status:
                     with header_col1:
                         st.markdown(f"**🕒 撮影日時: {item['time']}** （タイプ: {item['type']}）")
                     with header_col2:
-                        if st.button("🗑️ 行", key=f"del_btn_{idx}_{item['timestamp']}", type="secondary"):
+                        if st.button("🗑️ 削除", key=f"del_btn_{idx}_{item['timestamp']}", type="secondary"):
                             st.session_state.thermal_history.pop(idx)
                             st.rerun()
 
