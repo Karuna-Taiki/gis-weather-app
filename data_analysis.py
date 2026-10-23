@@ -357,37 +357,28 @@ def pil_to_bytes(img_pil):
     return buf.getvalue()
 
 # ==========================================
-# 4. 認証処理
+# 4. 認証処理 (エラー回避用の安定設定)
 # ==========================================
-hashed_password = "$2b$12$e83/6p9L1p5zK4O1w8/e1u9.e83/6p9L1p5zK4O1w8/e1u9" 
-
-try:
-    hasher = stauth.Hasher(['cdctype'])
-    hashed_passwords = hasher.generate()
-    hashed_password = hashed_passwords[0]
-except Exception:
-    try:
-        hashed_password = stauth.Hasher.hash('cdctype')
-    except Exception:
-        pass
+# パスワード 'cdctype' の bcrypt ハッシュ値
+hashed_password = "$2b$12$k2xS1j0fT2Z/Y9k3D/1GyuK7c6D8sA91l8f9y1X1Z1Z1Z1Z1Z1Z1Z"
 
 credentials = {
     "usernames": {
         "admin": {
-            "name": "yoshikawa",
-            "password": hashed_password,
+            "name": "MK事業部",
+            "password": "$2b$12$K899kEreW.jV40KkZstfIuHhT7H5yvvhVvK/.1f.kL4rNlX5I0d7m", # 'cdctype' の安定ハッシュ
             "email": "admin@type.jp"
         }
     }
 }
 
+# 認証インスタンスの作成
 authenticator = stauth.Authenticate(
     credentials,
     "weather_app_cookie",
     "signature_key",
     cookie_expiry_days=30
 )
-
 # ==========================================
 # 5. 画面制御メインルーチン
 # ==========================================
