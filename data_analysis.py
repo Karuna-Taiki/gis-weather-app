@@ -357,52 +357,34 @@ def pil_to_bytes(img_pil):
     return buf.getvalue()
 
 # ==========================================
-# 4. 認証処理 (エラー回避用の安定設定)
+# 4. 簡易認証処理（Streamlit標準形式）
 # ==========================================
-# パスワード 'cdctype' の bcrypt ハッシュ値
-hashed_password = "$2b$12$k2xS1j0fT2Z/Y9k3D/1GyuK7c6D8sA91l8f9y1X1Z1Z1Z1Z1Z1Z1Z"
+if "authentication_status" not in st.session_state:
+    st.session_state["authentication_status"] = False
 
-credentials = {
-    "usernames": {
-        "admin": {
-            "name": "MK事業部",
-            "password": "$2b$12$K899kEreW.jV40KkZstfIuHhT7H5yvvhVvK/.1f.kL4rNlX5I0d7m", # 'cdctype' の安定ハッシュ
-            "email": "admin@type.jp"
-        }
-    }
-}
-
-# 認証インスタンスの作成
-authenticator = stauth.Authenticate(
-    credentials,
-    "weather_app_cookie",
-    "signature_key",
-    cookie_expiry_days=30
-)
-# ==========================================
-# 5. 画面制御メインルーチン
-# ==========================================
-if not st.session_state.get("authentication_status"):
+if not st.session_state["authentication_status"]:
     st.markdown('<div class="login-title">気象GISデータ可視化システム</div>', unsafe_allow_html=True)
-
-try:
-    authenticator.login(location='main')
-except TypeError:
-    try:
-        authenticator.login('ログイン', 'main')
-    except Exception:
-        authenticator.login()
+    
+    with st.form("login_form"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit_button = st.form_submit_button("Login")
+        
+        if submit_button:
+            if username == "admin" and password == "cdctype":
+                st.session_state["authentication_status"] = True
+                st.session_state["name"] = "MK事業部"
+                st.rerun()
+            else:
+                st.error("ユーザー名またはパスワードが間違っています")
 
 authentication_status = st.session_state.get("authentication_status")
 name = st.session_state.get("name", "管理者")
 
-if authentication_status == False:
-    st.error('ユーザー名またはパスワードが間違っています')
-
-elif authentication_status is None:
-    st.info('ユーザーIDとパスワードを入力してください')
-
-elif authentication_status:
+# ==========================================
+# 5. 画面制御メインルーチン
+# ==========================================
+if authentication_status:
     if "selected_menu" not in st.session_state:
         st.session_state.selected_menu = "気象GISデータ可視化システム"
 
@@ -432,7 +414,7 @@ elif authentication_status:
                 st.rerun()
 
         if st.button("Logout", key="logout_btn"):
-            st.session_state["authentication_status"] = None
+            st.session_state["authentication_status"] = False
             st.rerun()
 
     # --- 2. メインコンテンツ領域 ---
