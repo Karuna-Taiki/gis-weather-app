@@ -376,7 +376,7 @@ if not st.session_state["authentication_status"]:
         if submit_button:
             if username == "admin" and password == "cdctype":
                 st.session_state["authentication_status"] = True
-                st.session_state["name"] = "MK事業部"
+                st.session_state["name"] = "テスト"
                 st.rerun()
             else:
                 st.error("ユーザー名またはパスワードが間違っています")
